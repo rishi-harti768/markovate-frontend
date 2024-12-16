@@ -43,7 +43,7 @@
   margin: 0;
   background-color: transparent;
   box-sizing: border-box;
-  user-select: none;
+  user-select: text;
 }
 
 html,
@@ -62,7 +62,7 @@ a {
   body::-webkit-scrollbar {
     width: var(--uxxsmall);
   }
-  
+
   body::-webkit-scrollbar-track {
     background-color: #222;
   }
