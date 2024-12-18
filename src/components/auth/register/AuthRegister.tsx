@@ -1,6 +1,6 @@
 "use client";
-import { authLogin, authRegister } from "@/utils/auth";
-import React, { useEffect, useState } from "react";
+import { authRegister } from "@/utils/auth";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 
 const AuthRegister = () => {

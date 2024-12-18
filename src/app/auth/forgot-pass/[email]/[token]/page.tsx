@@ -1,17 +1,14 @@
 import ForgotPassAfter from "@/components/auth/forgot-pass/ForgotPassAfter";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { JSX } from "react";
 
 const Page = async ({
-  params: { email, token },
+  params,
 }: {
-  params: {
-    email: string;
-    token: string;
-  };
-}): Promise<JSX.Element> => {
-  email = email.replace("%40", "@");
+  params: Promise<{ email: string; token: string }>;
+}) => {
+  const email: string = (await params).email.replace("%40", "@");
+  const token: string = (await params).token;
   const cook = await cookies();
   if (cook.has("refreshToken")) {
     redirect("/auth");

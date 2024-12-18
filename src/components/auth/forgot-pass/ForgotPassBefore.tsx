@@ -1,6 +1,6 @@
 "use client";
-import { authforgotpassbefore, authLogin, authRegister } from "@/utils/auth";
-import React, { useEffect, useState } from "react";
+import { authforgotpassbefore } from "@/utils/auth";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 
 const ForgotPassBefore = () => {
@@ -10,7 +10,6 @@ const ForgotPassBefore = () => {
 
   const handlefp = async () => {
     const res = await authforgotpassbefore(credentials);
-    console.log(res.status, res.responseText);
 
     //check empty fields
     if (res.status == 400 && res.responseText == "EMPTY_FIELDS") {
