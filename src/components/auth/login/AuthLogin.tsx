@@ -12,26 +12,26 @@ const AuthLogin = () => {
     const res = await authLogin(credentials);
 
     // check empty fields
-    if (res.status == 400 && res.responseText == "EMPTY_FIELDS") {
+    if (res.status == 200 && res.responseText == "EMPTY_FIELDS") {
       setError("Error: Empty fields");
       return;
     }
 
     // email format
-    if (res.status == 400 && res.responseText == "INVALID_EMAIL_FORMAT") {
+    if (res.status == 200 && res.responseText == "INVALID_EMAIL_FORMAT") {
       setError("Error: Invalid email format");
       return;
     }
 
     // password strength
-    if (res.status == 400 && res.responseText == "WEAK_PASSWORD") {
+    if (res.status == 200 && res.responseText == "WEAK_PASSWORD") {
       setError("Error: Weak password");
       return;
     }
 
     // check if acc exists
     if (
-      res.status == 400 &&
+      res.status == 200 &&
       (res.responseText == "EMAIL_NOT_FOUND" ||
         res.responseText == "INCORRECT_PASSWORD")
     ) {

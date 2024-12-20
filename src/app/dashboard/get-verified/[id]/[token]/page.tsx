@@ -1,24 +1,22 @@
-import ForgotPassAfter from "@/components/auth/forgot-pass/ForgotPassAfter";
+import AccountVerifcationAfter from "@/components/dashboard/AccountVerifcationAfter";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 const Page = async ({
   params,
 }: {
-  params: Promise<{ email: string; token: string }>;
+  params: Promise<{ id: string; token: string }>;
 }) => {
-  const email: string = (await params).email.replace("%40", "@");
+  const id: string = (await params).id;
   const token: string = (await params).token;
   const cook = await cookies();
-  if (cook.has("refreshToken")) {
+  if (!cook.has("refreshToken")) {
     redirect("/dashboard");
   }
-
   return (
     <>
-      <ForgotPassAfter email={email} token={token} />
+      <AccountVerifcationAfter id={id} token={token} />
     </>
   );
 };
-
 export default Page;

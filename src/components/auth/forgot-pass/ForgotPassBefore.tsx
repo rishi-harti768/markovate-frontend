@@ -12,25 +12,25 @@ const ForgotPassBefore = () => {
     const res = await authforgotpassbefore(credentials);
 
     //check empty fields
-    if (res.status == 400 && res.responseText == "EMPTY_FIELDS") {
+    if (res.status == 200 && res.responseText == "EMPTY_FIELDS") {
       setError("Error: Empty fields");
       return;
     }
 
     //email format
-    if (res.status == 400 && res.responseText == "INVALID_EMAIL_FORMAT") {
+    if (res.status == 200 && res.responseText == "INVALID_EMAIL_FORMAT") {
       setError("Error: Invalid email format");
       return;
     }
 
     //check if acc exists
-    if (res.status == 400 && res.responseText == "EMAIL_NOT_FOUND") {
+    if (res.status == 200 && res.responseText == "EMAIL_NOT_FOUND") {
       setError("Error: Email not found");
       return;
     }
 
     //other errors
-    else if (res.status == 500) {
+    if (res.status == 500) {
       setError("Error: Internal server error");
       return;
     }

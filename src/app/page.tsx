@@ -7,7 +7,7 @@ const Home = () => {
     test();
   });
   const test = async () => {
-    const res = await fetch(`${host}/test`, {
+    const res = await fetch(`${host}/account/fetch-account`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
