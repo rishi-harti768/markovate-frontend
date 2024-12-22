@@ -44,9 +44,10 @@ const AuthLogin = () => {
       setError("Error: Internal server error");
       return;
     }
+
     if (res.status == 200 && res.responseText == "AUTHED") {
       setError("");
-      router.replace("/");
+      router.replace("/dashboard");
     }
   };
 

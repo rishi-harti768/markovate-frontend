@@ -11,7 +11,6 @@ export const accountFetch = async () => {
     });
     const responseText: string = await res.text();
     const status: number = res.status;
-    console.log(status, responseText);
     return { status, responseText };
   } catch (error) {
     return { status: 500 };
@@ -29,7 +28,6 @@ export const accountVerifyBefore = async () => {
     });
     const responseText: string = await res.text();
     const status: number = res.status;
-    console.log(status, responseText);
     return { status, responseText };
   } catch (error) {
     return { status: 500 };
@@ -51,7 +49,7 @@ export const accountVerifyAfter = async (credentials: {
     });
     const responseText: string = await res.text();
     const status: number = res.status;
-    console.log(status, responseText);
+
     return { status, responseText };
   } catch (error) {
     return { status: 500 };

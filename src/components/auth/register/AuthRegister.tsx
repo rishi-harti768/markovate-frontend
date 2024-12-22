@@ -44,7 +44,7 @@ const AuthRegister = () => {
     // success
     if (res.status == 200 && res.responseText == "AUTHED") {
       setError("");
-      router.replace("/");
+      router.replace("/dashboard");
     }
   };
 

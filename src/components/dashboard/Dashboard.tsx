@@ -11,7 +11,6 @@ const Dashboard = () => {
   }, []);
   const accountGet = async () => {
     const res = await accountFetch();
-    console.log(res);
 
     if (res.status == 200 && res.responseText == "UNAUTHORIZED") {
       return;
