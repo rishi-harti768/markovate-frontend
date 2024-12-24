@@ -1,4 +1,4 @@
-import AccountVerifcationAfter from "@/components/dashboard/AccountVerifcationAfter";
+import AccountVerifcationAfter from "@/components/dashboard/AccVer/AccountVerifcationAfter";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 

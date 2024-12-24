@@ -1,4 +1,4 @@
-import AccountVerificationBefore from "@/components/dashboard/AccountVerificationBefore";
+import AccountVerificationBefore from "@/components/dashboard/AccVer/AccountVerificationBefore";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 const Page = async () => {

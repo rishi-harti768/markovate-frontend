@@ -20,13 +20,16 @@ const AccountVerifcationAfter = ({
     if (res.status == 200 && res.responseText == "ACCOUNT_NOT_FOUND") {
       return;
     }
+
     if (res.status == 200 && res.responseText == "INCORRECT_TOKEN") {
       return;
     }
+
     if (res.status == 500) {
       console.log("internal server error");
       return;
     }
+
     if (res.status == 200 && res.responseText == "EMAIL_VERIFIED") {
       console.log("email verified");
     }

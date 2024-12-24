@@ -57,6 +57,10 @@ body {
   scroll-behavior: smooth;
 }
 
+article {
+  min-height: 100svh;
+}
+
 a {
   text-decoration: none;
   color: inherit;
@@ -65,6 +69,7 @@ a {
 @media (pointer : fine) {
   .scrollbar::-webkit-scrollbar {
     width: var(--uxxsmall);
+    height: var(--uxxsmall);
   }
 
   .scrollbar::-webkit-scrollbar-track {
