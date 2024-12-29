@@ -1,8 +1,7 @@
 "use client";
-import { authRegister } from "@/utils/auth";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { fetchAuth, handelAuthResponse } from "@/utils/newArch/auth";
+import { fetchAuth, handelAuthResponse } from "@/utils/auth";
 
 const AuthRegister = () => {
   const router = useRouter();

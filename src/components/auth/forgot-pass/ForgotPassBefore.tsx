@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { handelAuthResponse, fetchAuth } from "@/utils/newArch/auth";
+import { handelAuthResponse, fetchAuth } from "@/utils/auth";
 
 const ForgotPassBefore = () => {
   const router = useRouter();
@@ -18,8 +18,6 @@ const ForgotPassBefore = () => {
   const handlefp = async () => {
     const res = await fetchAuth("/auth/forgot-pass", credentials);
     handelAuthResponse(res, setError, router, setMailSent);
-    
-    console.log(res);
   };
 
   return (

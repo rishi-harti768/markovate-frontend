@@ -1,6 +1,5 @@
 "use client";
-import { authLogin } from "@/utils/auth";
-import { fetchAuth, handelAuthResponse } from "@/utils/newArch/auth";
+import { fetchAuth, handelAuthResponse } from "@/utils/auth";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
