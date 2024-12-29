@@ -22,6 +22,8 @@ const AccountVerificationBefore = () => {
 
   const getverStatus = async () => {
     const res = await accountVerifyBefore({ action: "check" });
+    console.log(res);
+
     handleRespose(res.status, res.responseText);
   };
 
@@ -37,20 +39,21 @@ const AccountVerificationBefore = () => {
     if (status == 200 && resTxt == "MISSING_FIELDS") {
       return;
     }
-    if (status == 200 && resTxt == "ACCOUNT_NOT_FOUND") {
-      return;
-    }
+
     if (status == 200 && resTxt == "ACCOUNT_ALREADY_VERIFIED") {
       router.replace("/dashboard");
       return;
     }
+
     if (status == 500) {
       console.log("internal server error");
       return;
     }
+
     if (status == 200 && resTxt == "EMAIL_VERIFICATION_SENT") {
       return;
     }
+
     if (typeof resTxt == "object" && status == 200 && "verified" in resTxt) {
       if (resTxt.verified) return router.replace("/dashboard");
     }

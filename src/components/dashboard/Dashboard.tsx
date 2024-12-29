@@ -5,12 +5,12 @@ import { getDashboard } from "@/utils/account";
 
 const Dashboard = () => {
   const [res, setRes] = useState<object>({});
+  const [edumail, setEduMail] = useState<string>("");
   const router = useRouter();
   useEffect(() => {
     const init = async () => {
       const res = await getDashboard();
       setRes(res);
-      console.log(res);
       if (res.status == 200 && res.responseText == "UNAUTHORIZED") {
         return;
       }
@@ -27,12 +27,18 @@ const Dashboard = () => {
     };
     init();
   }, []);
+
   return (
     <>
       <h1>Dashboard</h1>
       <p>{JSON.stringify(res)}</p>
       <button onClick={() => router.push("/dashboard/my-profile")}>
         Profile
+      </button>
+      <hr />
+
+      <button onClick={() => router.push("/dashboard/org/new")}>
+        New Organizations
       </button>
     </>
   );

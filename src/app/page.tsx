@@ -1,6 +1,5 @@
 "use server";
 import Image from "next/image";
-import { getAccount } from "@/utils/server/test";
 
 const Home = () => {
   /* const host = process.env.NEXT_PUBLIC_HOST_URL;

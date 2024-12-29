@@ -2,6 +2,7 @@
 import { authRegister } from "@/utils/auth";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import { fetchAuth, handelAuthResponse } from "@/utils/newArch/auth";
 
 const AuthRegister = () => {
   const router = useRouter();
@@ -9,43 +10,8 @@ const AuthRegister = () => {
   const [error, setError] = useState("");
 
   const handleRegister = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    const res = await authRegister(credentials);
-
-    // check empty fields
-    if (res.status == 200 && res.responseText == "EMPTY_FIELDS") {
-      setError("Error: Empty fields");
-      return;
-    }
-
-    // email format
-    if (res.status == 200 && res.responseText == "INVALID_EMAIL_FORMAT") {
-      setError("Error: Invalid email format");
-      return;
-    }
-
-    // password strength
-    if (res.status == 200 && res.responseText == "WEAK_PASSWORD") {
-      setError("Error: Weak password");
-      return;
-    }
-
-    // check if acc exists
-    if (res.status == 200 && res.responseText == "EMAIL_ALREADY_EXISTS") {
-      setError("Error: Email already exists");
-      return;
-    }
-
-    // other errors
-    if (res.status == 500) {
-      setError("Error: Internal server error");
-      return;
-    }
-
-    // success
-    if (res.status == 200 && res.responseText == "AUTHED") {
-      setError("");
-      router.replace("/dashboard");
-    }
+    const res = await fetchAuth("/auth/register", credentials);
+    handelAuthResponse(res, setError, router);
   };
 
   return (

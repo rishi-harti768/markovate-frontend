@@ -10,6 +10,7 @@ export const getDashboard = async () => {
       credentials: "include",
     });
     const responseText: string = await res.text();
+    toAuthForce(responseText);
     const status: number = res.status;
     return { status, responseText };
   } catch (error) {
@@ -109,4 +110,10 @@ const isJSON = (txt: string) => {
     return false;
   }
   return true;
+};
+
+const toAuthForce = (resStr: string) => {
+  if (resStr === "FORCE_AUTH_OUT") {
+    document.location = "/auth";
+  }
 };

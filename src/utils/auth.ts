@@ -38,7 +38,7 @@ export const authRegister = async (credentials: object) => {
 
 export const authforgotpassbefore = async (credentials: object) => {
   try {
-    const response = await fetch(`${host}/auth/forgot-pass-before`, {
+    const response = await fetch(`${host}/auth/forgot-pass`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -58,7 +58,7 @@ export const authforgotpassbefore = async (credentials: object) => {
 
 export const authforgotpassafter = async (credentials: object) => {
   try {
-    const response = await fetch(`${host}/auth/forgot-pass-after`, {
+    const response = await fetch(`${host}/auth/forgot-pass/change-pass`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

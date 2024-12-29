@@ -1,5 +1,6 @@
 "use client";
 import { authforgotpassafter } from "@/utils/auth";
+import { fetchAuth, handelAuthResponse } from "@/utils/newArch/auth";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
@@ -21,46 +22,8 @@ const ForgotPassAfter = ({
 
   const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    const res = await authforgotpassafter(credentials);
-    // is empty
-    if (res.status == 200 && res.responseText == "EMPTY_FIELDS") {
-      setError("Error: Empty fields");
-      return;
-    }
-
-    // email format
-    if (res.status == 200 && res.responseText == "INVALID_EMAIL_FORMAT") {
-      setError("Error: Invalid email format");
-      return;
-    }
-
-    // password strength
-    if (res.status == 200 && res.responseText == "WEAK_PASSWORD") {
-      setError("Error: Weak password");
-      return;
-    }
-
-    // account not found
-    if (res.status == 200 && res.responseText == "EMAIL_NOT_FOUND") {
-      setError("Error: Email not found");
-      return;
-    }
-
-    // check token
-    if (res.status == 200 && res.responseText == "INVALID_TOKEN") {
-      setError("Error: Invalid token");
-      return;
-    }
-
-    // other errors
-    if (res.status == 500) {
-      setError("Error: Internal server error");
-      return;
-    }
-    if (res.status == 200 && res.responseText == "PASSWORD_CHANGED") {
-      setError("");
-      router.replace("/auth");
-    }
+    const res = await fetchAuth("/auth/forgot-pass/change-pass", credentials);
+    handelAuthResponse(res, setError, router);
   };
   return (
     <>

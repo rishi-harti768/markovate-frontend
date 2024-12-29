@@ -1,44 +1,25 @@
 "use client";
-import { authforgotpassbefore } from "@/utils/auth";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { handelAuthResponse, fetchAuth } from "@/utils/newArch/auth";
 
 const ForgotPassBefore = () => {
   const router = useRouter();
   const [credentials, setCredentials] = useState({ email: "" });
   const [error, setError] = useState("");
+  const [isMailSent, setMailSent] = useState(false);
 
-  const handlefp = async () => {
-    const res = await authforgotpassbefore(credentials);
-
-    //check empty fields
-    if (res.status == 200 && res.responseText == "EMPTY_FIELDS") {
-      setError("Error: Empty fields");
-      return;
-    }
-
-    //email format
-    if (res.status == 200 && res.responseText == "INVALID_EMAIL_FORMAT") {
-      setError("Error: Invalid email format");
-      return;
-    }
-
-    //check if acc exists
-    if (res.status == 200 && res.responseText == "EMAIL_NOT_FOUND") {
-      setError("Error: Email not found");
-      return;
-    }
-
-    //other errors
-    if (res.status == 500) {
-      setError("Error: Internal server error");
-      return;
-    }
-
-    if (res.status == 200 && res.responseText == "MAIL_SENT") {
-      setError("");
+  useEffect(() => {
+    if (isMailSent) {
       console.log("email sent");
     }
+  }, [isMailSent]);
+
+  const handlefp = async () => {
+    const res = await fetchAuth("/auth/forgot-pass", credentials);
+    handelAuthResponse(res, setError, router, setMailSent);
+    
+    console.log(res);
   };
 
   return (

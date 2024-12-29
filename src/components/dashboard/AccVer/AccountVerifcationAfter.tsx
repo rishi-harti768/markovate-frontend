@@ -16,12 +16,9 @@ const AccountVerifcationAfter = ({
   }, []);
   const accVerAfter = async () => {
     const res = await accountVerifyAfter({ id, token });
-    console.log(res);
-    if (res.status == 200 && res.responseText == "ACCOUNT_NOT_FOUND") {
-      return;
-    }
 
     if (res.status == 200 && res.responseText == "INCORRECT_TOKEN") {
+      router.replace("/dashboard")
       return;
     }
 

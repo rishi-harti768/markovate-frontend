@@ -1,17 +1,17 @@
-"use server";
-import Dashboard from "@/components/dashboard/Dashboard";
+import NewOrg from "@/components/dashboard/org/NewOrg";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 const Page = async () => {
-  const cook = await cookies();
-  if (!cook.has("refreshToken")) {
+  const CookieStore = await cookies();
+  if (!CookieStore.has("refreshToken")) {
     redirect("/auth");
   }
   return (
     <>
-      <Dashboard />
+      <NewOrg />
     </>
   );
 };
+
 export default Page;
