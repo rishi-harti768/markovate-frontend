@@ -51,7 +51,7 @@ const PasswordStrengthField: React.FC<PasswordStrengthFieldProps> = ({
         {criteria.map(({ id, label, regex }) => (
           <div key={id} className="criteria-item">
             <input type="checkbox" checked={checkCriteria(regex)} readOnly />
-            <label>{label}</label>
+            <label className="label">{label}</label>
           </div>
         ))}
       </div>
