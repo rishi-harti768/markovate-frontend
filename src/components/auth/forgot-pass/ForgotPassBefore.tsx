@@ -2,6 +2,9 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { handelAuthResponse, fetchAuth } from "@/utils/auth";
+import "../auth.css";
+import EmailField from "../EmailField";
+import FormButton from "../MainButton";
 
 const ForgotPassBefore = () => {
   const router = useRouter();
@@ -20,18 +23,27 @@ const ForgotPassBefore = () => {
     handelAuthResponse(res, setError, router, setMailSent);
   };
 
+  function handleLogin(): void {
+    router.push("./ForgotPassAfter");
+  }
+
   return (
-    <>
-      <h1>Forgot Password</h1>
-      <input
-        type="text"
-        onChange={(e) =>
-          setCredentials({ ...credentials, email: e.target.value })
-        }
-      />
-      <button onClick={handlefp}>Send Email</button>
-      <p>{error}</p>
-    </>
+    <div className="auth-container">
+      <h1 className="title">Forgot Password</h1>
+      <div className="content">
+        <div className="email-field">
+          <h5>Email</h5>
+          <EmailField
+            value={credentials.email}
+            onChange={(email) => setCredentials({ email: email })}
+            error={!credentials.email && error ? "This field is required" : ""}
+          />
+        </div>
+       
+           <FormButton text="Send Email" onClick={handleLogin}  />
+        {error && <p className="error">{error}</p>}
+      </div>
+    </div>
   );
 };
 
