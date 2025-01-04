@@ -1,62 +1,44 @@
 "use client";
 import { accountVerifyBefore } from "@/utils/account";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { fetchAccount, handleAccResponse } from "@/utils/account";
 
 const AccountVerificationBefore = () => {
   const router = useRouter();
+  const [resData, setResData] = useState<object>({});
 
   useEffect(() => {
+    const init = async () => {
+      const res = await fetchAccount("/account/verify-email/send", {
+        action: "status",
+      });
+      handleAccResponse(res, router, setResData);
+      console.log(resData);
+    };
     document.addEventListener("visibilitychange", async (e) => {
       const d = e.target as Document;
       if (d.visibilityState == "hidden") {
       } else if (d.visibilityState == "visible") {
-        getverStatus();
+        init();
       }
     });
-    getverStatus();
+    init();
     return () => {
       document.removeEventListener("visibilitychange", () => {});
     };
   }, []);
 
-  const getverStatus = async () => {
-    const res = await accountVerifyBefore({ action: "check" });
-    console.log(res);
-
-    handleRespose(res.status, res.responseText);
-  };
+  useEffect(() => {
+    console.log(resData);
+  }, [resData]);
 
   const handleButtonClick = async () => {
-    const res = await accountVerifyBefore({ action: "mail" });
-    handleRespose(res.status, res.responseText);
-  };
-
-  const handleRespose = (
-    status: number,
-    resTxt: string | undefined | object
-  ) => {
-    if (status == 200 && resTxt == "MISSING_FIELDS") {
-      return;
-    }
-
-    if (status == 200 && resTxt == "ACCOUNT_ALREADY_VERIFIED") {
-      router.replace("/dashboard");
-      return;
-    }
-
-    if (status == 500) {
-      console.log("internal server error");
-      return;
-    }
-
-    if (status == 200 && resTxt == "EMAIL_VERIFICATION_SENT") {
-      return;
-    }
-
-    if (typeof resTxt == "object" && status == 200 && "verified" in resTxt) {
-      if (resTxt.verified) return router.replace("/dashboard");
-    }
+    const res = await fetchAccount("/account/verify-email/send", {
+      action: "mail",
+    });
+    console.log(res);
+    handleAccResponse(res, router, setResData);
   };
 
   return (

@@ -11,7 +11,7 @@ interface resObject {
   resServerErrDialog?: string;
 }
 
-export const fetchAccount = async (url: string, body: object) => {
+export const fetchAdmin = async (url: string, body: object) => {
   try {
     const res = await fetch(`${host}${url}`, {
       method: "POST",
@@ -29,13 +29,13 @@ export const fetchAccount = async (url: string, body: object) => {
   }
 };
 
-export const handleAccResponse = (
+export const handleAdminResponse = (
   res: resObject,
   router: AppRouterInstance,
   setResData: Dispatch<SetStateAction<object>>
 ) => {
   if (res.status === 500) {
-    console.log("Server Error (" + res.resCode + "): " + res.resErrorMsg);
+    console.warn("Server Error (" + res.resCode + "): " + res.resErrorMsg);
     return;
   }
   if (res.status == 200) {

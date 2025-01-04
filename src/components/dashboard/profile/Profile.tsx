@@ -1,83 +1,105 @@
 "use client";
-import { getMyProfile, setMyProfile } from "@/utils/account";
-import { object } from "motion/react-client";
+
+import { fetchAccount, handleAccResponse } from "@/utils/account";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import { BiAddToQueue } from "react-icons/bi";
+
+export interface resDataObject {
+  profile?: {
+    first_name?: string;
+    last_name?: string;
+    gender?: string;
+    date_of_birth?: string;
+  };
+  isProfileSetup?: boolean;
+  missingFields?: string[];
+  accUpdated?: boolean;
+}
 
 const Profile = () => {
-  const [profile, setProfile] = useState<{
-    first_name: string;
-    last_name: string;
-    gender: string;
-    date_of_birth: string;
-  }>({
-    first_name: "",
-    last_name: "",
-    gender: "",
-    date_of_birth: "",
+  const router = useRouter();
+  const [resDataGet, setResDataGet] = useState<resDataObject>({
+    profile: {
+      first_name: "",
+      last_name: "",
+      gender: "",
+      date_of_birth: "",
+    },
+    isProfileSetup: false,
   });
+
+  const [resDataSet, setResDataSet] = useState<resDataObject>({});
+
   useEffect(() => {
     const init = async () => {
-      const res = await getMyProfile();
+      const res = await fetchAccount("/account/get-my-profile", {});
       console.log(res);
-      if (res.status == 200 && res.responseText == "UNAUTHORIZED") {
-        return;
-      }
-
-      if (res.status == 200 && res.responseText == "ACCOUNT_NOT_FOUND") {
-        return;
-      }
-      if (res.status == 200 && res.responseText == "NO_PROFILE") {
-        return;
-      }
-
-      if (res.status == 500) {
-        return;
-      }
-
-      if (res.status == 200 && typeof res.responseText === "object") {
-        const obj = res.responseText as {
-          first_name: string;
-          last_name: string;
-          gender: string;
-          date_of_birth: string;
-        };
-        setProfile(obj);
-      }
+      handleAccResponse(res, router, setResDataGet);
     };
     init();
   }, []);
 
-  const btnchangeprofile = async () => {
-    const res = await setMyProfile({ profile: profile });
-    console.log(res);
-  };
+  useEffect(() => {}, [resDataGet]);
 
+  useEffect(() => {
+    console.log(resDataSet);
+  }, [resDataSet]);
+
+  const btnchangeprofile = async () => {
+    const res = await fetchAccount("/account/set-my-profile", {
+      profile: resDataGet.profile,
+    });
+    handleAccResponse(res, router, setResDataSet);
+  };
   return (
     <>
       <div>Profile</div>
-      <p>{JSON.stringify(profile)}</p>
+      {resDataGet.isProfileSetup && <div>Setup your profile</div>}
+      <p>{JSON.stringify(resDataGet)}</p>
+      <p>{JSON.stringify(resDataSet)}</p>
       <input
         type="text"
-        defaultValue={profile.first_name}
-        onChange={(e) => setProfile({ ...profile, first_name: e.target.value })}
-      />
-      <input
-        type="text"
-        defaultValue={profile.last_name}
-        onChange={(e) => setProfile({ ...profile, last_name: e.target.value })}
-      />
-      <input
-        type="text"
-        defaultValue={profile.gender}
-        onChange={(e) => setProfile({ ...profile, gender: e.target.value })}
-      />
-      <input
-        type="text"
-        defaultValue={profile.date_of_birth}
+        defaultValue={resDataGet.profile?.first_name}
         onChange={(e) =>
-          setProfile({ ...profile, date_of_birth: e.target.value })
+          setResDataGet({
+            ...resDataGet,
+            profile: { ...resDataGet.profile, first_name: e.target.value },
+          })
         }
+        placeholder="First Name"
+      />
+      <input
+        type="text"
+        defaultValue={resDataGet.profile?.last_name}
+        onChange={(e) =>
+          setResDataGet({
+            ...resDataGet,
+            profile: { ...resDataGet.profile, last_name: e.target.value },
+          })
+        }
+        placeholder="Last Name"
+      />
+      <input
+        type="text"
+        defaultValue={resDataGet.profile?.gender}
+        onChange={(e) =>
+          setResDataGet({
+            ...resDataGet,
+            profile: { ...resDataGet.profile, gender: e.target.value },
+          })
+        }
+        placeholder="Gender"
+      />
+      <input
+        type="text"
+        defaultValue={resDataGet.profile?.date_of_birth}
+        onChange={(e) =>
+          setResDataGet({
+            ...resDataGet,
+            profile: { ...resDataGet.profile, date_of_birth: e.target.value },
+          })
+        }
+        placeholder="Date of Birth"
       />
       <button onClick={btnchangeprofile}>Change</button>
     </>
@@ -85,3 +107,5 @@ const Profile = () => {
 };
 
 export default Profile;
+/*
+ */

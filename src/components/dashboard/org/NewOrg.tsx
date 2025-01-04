@@ -1,5 +1,7 @@
 "use client";
+import { fetchAccount, handleAccResponse } from "@/utils/account";
 import { newOrgReg } from "@/utils/organization";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 const NewOrg = () => {
@@ -10,9 +12,11 @@ const NewOrg = () => {
     email: "",
     phone: "",
   });
+
+  const router = useRouter();
   const handleSubmit = async () => {
     console.log(org);
-    const res = await newOrgReg(org);
+    const res = await fetchAccount("/account/reg-new-org", org);
     console.log(res);
   };
   return (
