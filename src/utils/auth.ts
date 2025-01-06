@@ -23,7 +23,6 @@ export const fetchAuth = async (url: string, body: object) => {
     });
     let responseData = await response.json();
     responseData.status = response.status;
-    console.log(responseData);
     return responseData;
   } catch (error) {
     return { status: 500, resErrMsg: error };
