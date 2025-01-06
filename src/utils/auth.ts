@@ -3,6 +3,14 @@ import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.share
 import { Dispatch, SetStateAction } from "react";
 const host = process.env.NEXT_PUBLIC_HOST_URL;
 
+interface resObject {
+  status: number;
+  resCode: string;
+  resRoute?: string;
+  resErrMsg?: string;
+  resServerErrDialog?: string;
+}
+
 export const fetchAuth = async (url: string, body: object) => {
   try {
     const response = await fetch(`${host}${url}`, {
@@ -15,6 +23,7 @@ export const fetchAuth = async (url: string, body: object) => {
     });
     let responseData = await response.json();
     responseData.status = response.status;
+    console.log(responseData);
     return responseData;
   } catch (error) {
     return { status: 500, resErrMsg: error };
@@ -22,66 +31,25 @@ export const fetchAuth = async (url: string, body: object) => {
 };
 
 export const handelAuthResponse = (
-  res: {
-    status?: string;
-    resErrMsg?: string;
-    resCode?: string;
-    resRoute?: string;
-  },
-  setError: Dispatch<SetStateAction<string>>,
+  res: resObject,
   router: AppRouterInstance,
-  setMailSent?: Dispatch<SetStateAction<boolean>>
+  setResData: Dispatch<SetStateAction<object>>
 ) => {
-  if (res.status == "500") {
-    console.log(res.resErrMsg);
-  }
-  if ("resCode" in res) {
-    if (res.resCode == "EMPTY_FIELDS") {
-      setError("Empty fields");
-      return;
-    }
-    if (res.resCode == "INVALID_EMAIL_FORMAT") {
-      setError("Invalid email format");
-      return;
-    }
-    if (res.resCode == "WEAK_PASSWORD") {
-      setError("Weak password");
-      return;
-    }
-    if (res.resCode == "AUTH_REGISTER_EMAIL_ALREADY_EXISTS") {
-      setError("Email already exists");
-      return;
-    }
-    if (res.resCode == "AUTH_REGISTER_SUCCESS" && "resRoute" in res) {
+  if (res.status >= 400) {
+    console.log("Server Error (" + res.resCode + "): " + res.resErrMsg);
+    return;
+  } else if (res.status == 200) {
+    if ("resRoute" in res && res.resRoute) {
       router.replace(res.resRoute as string);
       return;
     }
-
-    if (res.resCode == "AUTH_LOGIN_INVALID_EMAIL_OR_PASSWORD") {
-      setError("Incorrect email or password");
+    if ("resServerErrDialog" in res && res.resServerErrDialog) {
+      alert(res.resServerErrDialog);
       return;
     }
-    if (res.resCode == "AUTH_LOGIN_SUCCESS" && "resRoute" in res) {
-      router.replace(res.resRoute as string);
+    if ("resData" in res && res.resData) {
+      setResData(res.resData as object);
       return;
     }
-
-    if (res.resCode == "AUTH_FP_EMAIL_NOT_FOUND") {
-      setError("Email not found");
-      return;
-    }
-    if (res.resCode == "AUTH_FP_INVALID_TOKEN") {
-      setError("Invalid token");
-      return;
-    }
-    if (res.resCode == "AUTH_FP_EMAIL_SENT" && setMailSent) {
-      setMailSent(true);
-      return;
-    }
-    if (res.resCode == "AUTH_FP_CHANGED" && "resRoute" in res) {
-      router.replace(res.resRoute as string);
-      return;
-    }
-    setError(res.resCode as string);
   }
 };

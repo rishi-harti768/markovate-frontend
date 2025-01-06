@@ -7,7 +7,7 @@ interface resObject {
   status: number;
   resCode: string;
   resRoute?: string;
-  resErrorMsg?: string;
+  resErrMsg?: string;
   resServerErrDialog?: string;
 }
 
@@ -34,8 +34,8 @@ export const handleAccResponse = (
   router: AppRouterInstance,
   setResData: Dispatch<SetStateAction<object>>
 ) => {
-  if (res.status === 500) {
-    console.log("Server Error (" + res.resCode + "): " + res.resErrorMsg);
+  if (res.status >= 400) {
+    console.log("Server Error (" + res.resCode + "): " + res.resErrMsg);
     return;
   }
   if (res.status == 200) {
