@@ -1,23 +1,33 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { handelAuthResponse, fetchAuth } from "@/utils/auth";
 
+interface resDataObject {
+  error?: {
+    email?: string;
+  };
+  mailSent: boolean;
+}
 const ForgotPassBefore = () => {
   const router = useRouter();
   const [credentials, setCredentials] = useState({ email: "" });
-  const [error, setError] = useState("");
-  const [isMailSent, setMailSent] = useState(false);
+  const [resData, setResData] = useState<resDataObject>({
+    error: {
+      email: "",
+    },
+    mailSent: false,
+  });
 
-  useEffect(() => {
-    if (isMailSent) {
-      console.log("email sent");
-    }
-  }, [isMailSent]);
+  useEffect(() => {}, [resData]);
 
   const handlefp = async () => {
     const res = await fetchAuth("/auth/forgot-pass", credentials);
-    handelAuthResponse(res, setError, router, setMailSent);
+    handelAuthResponse(
+      res,
+      router,
+      setResData as Dispatch<SetStateAction<object>>
+    );
   };
 
   return (
@@ -29,8 +39,9 @@ const ForgotPassBefore = () => {
           setCredentials({ ...credentials, email: e.target.value })
         }
       />
+      <p>{resData.error?.email}</p>
       <button onClick={handlefp}>Send Email</button>
-      <p>{error}</p>
+      <p>mailSent: {resData.mailSent ? "true" : "false"}</p>
     </>
   );
 };
