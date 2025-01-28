@@ -2,24 +2,20 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { fetchAccount, handleAccResponse } from "@/utils/account";
+import { resObject } from "@/utils/types/resObject";
 
 interface resDataObject {
   hasSuperControls?: boolean;
 }
 
-const Dashboard = () => {
+const Dashboard = ({ res }: { res: object }) => {
   const [resData, setResData] = useState<resDataObject>({
     hasSuperControls: false,
   });
 
   const router = useRouter();
   useEffect(() => {
-    const init = async () => {
-      const res = await fetchAccount("/account/get-dashboard", {});
-      console.log(res);
-      handleAccResponse(res, router, setResData);
-    };
-    init();
+    handleAccResponse(res as resObject, router, setResData);
   }, []);
 
   useEffect(() => {
@@ -48,8 +44,3 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
-
-/* 
-handleAccResponse(res: resObject, router: AppRouterInstance, setResData: Dispatch<SetStateAction<object>>): void
-handleAccResponse(res: resObject, router: AppRouterInstance, setResData: React.Dispatch<React.SetStateAction<object>>): void
-*/

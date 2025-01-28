@@ -1,5 +1,4 @@
 "use client";
-import { accountVerifyBefore } from "@/utils/account";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { fetchAccount, handleAccResponse } from "@/utils/account";

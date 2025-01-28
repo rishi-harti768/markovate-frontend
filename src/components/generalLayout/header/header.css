@@ -1,0 +1,8 @@
+main>header {
+    z-index: 100;
+    background-color: #212121;
+    min-height: var(--uxlarge);
+    position: fixed;
+    top: 0;
+    width: 100%;
+}

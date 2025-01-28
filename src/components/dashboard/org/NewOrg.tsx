@@ -1,6 +1,5 @@
 "use client";
 import { fetchAccount, handleAccResponse } from "@/utils/account";
-import { newOrgReg } from "@/utils/organization";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 

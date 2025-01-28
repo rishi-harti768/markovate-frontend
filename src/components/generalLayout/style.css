@@ -1,0 +1,8 @@
+main {
+    min-height: 100svh;
+}
+
+main>article {
+    min-height: 100svh;
+    height: 1000px;
+}

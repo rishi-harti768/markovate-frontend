@@ -1,23 +1,28 @@
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { Dispatch, SetStateAction } from "react";
+import { resObject } from "./types/resObject";
 
 const host = process.env.NEXT_PUBLIC_HOST_URL;
 
-interface resObject {
-  status: number;
-  resCode: string;
-  resRoute?: string;
-  resErrMsg?: string;
-  resServerErrDialog?: string;
-}
-
-export const fetchAccount = async (url: string, body: object) => {
+export const fetchAccount = async (
+  url: string,
+  body: object,
+  cookies?: string
+) => {
   try {
+    let headers: {} = {
+      "Content-Type": "application/json",
+    };
+
+    if (cookies) {
+      headers = {
+        ...headers,
+        Cookie: cookies,
+      };
+    }
     const res = await fetch(`${host}${url}`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers,
       credentials: "include",
       body: JSON.stringify(body),
     });

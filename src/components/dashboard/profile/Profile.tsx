@@ -1,6 +1,7 @@
 "use client";
 
 import { fetchAccount, handleAccResponse } from "@/utils/account";
+import { resObject } from "@/utils/types/resObject";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
@@ -16,7 +17,7 @@ export interface resDataObject {
   accUpdated?: boolean;
 }
 
-const Profile = () => {
+const Profile = ({ res }: { res: object }) => {
   const router = useRouter();
   const [resDataGet, setResDataGet] = useState<resDataObject>({
     profile: {
@@ -31,19 +32,10 @@ const Profile = () => {
   const [resDataSet, setResDataSet] = useState<resDataObject>({});
 
   useEffect(() => {
-    const init = async () => {
-      const res = await fetchAccount("/account/get-my-profile", {});
-      console.log(res);
-      handleAccResponse(res, router, setResDataGet);
-    };
-    init();
+    handleAccResponse(res as resObject, router, setResDataGet);
   }, []);
 
   useEffect(() => {}, [resDataGet]);
-
-  useEffect(() => {
-    console.log(resDataSet);
-  }, [resDataSet]);
 
   const btnchangeprofile = async () => {
     const res = await fetchAccount("/account/set-my-profile", {

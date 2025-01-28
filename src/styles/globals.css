@@ -57,10 +57,6 @@ body {
   scroll-behavior: smooth;
 }
 
-article {
-  min-height: 100svh;
-}
-
 a {
   text-decoration: none;
   color: inherit;

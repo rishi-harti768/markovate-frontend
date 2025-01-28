@@ -1,23 +1,29 @@
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import { RedirectType } from "next/navigation";
 import { Dispatch, SetStateAction } from "react";
+import { resObject } from "./types/resObject";
 
 const host = process.env.NEXT_PUBLIC_HOST_URL;
 
-interface resObject {
-  status: number;
-  resCode: string;
-  resRoute?: string;
-  resErrMsg?: string;
-  resServerErrDialog?: string;
-}
-
-export const fetchAdmin = async (url: string, body: object) => {
+export const fetchAdmin = async (
+  url: string,
+  body: object,
+  cookies?: string
+) => {
   try {
+    let headers: {} = {
+      "Content-Type": "application/json",
+    };
+    if (cookies) {
+      headers = {
+        ...headers,
+        Cookie: cookies as string,
+      };
+    }
+
     const res = await fetch(`${host}${url}`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers,
       credentials: "include",
       body: JSON.stringify(body),
     });
@@ -31,8 +37,8 @@ export const fetchAdmin = async (url: string, body: object) => {
 
 export const handleAdminResponse = (
   res: resObject,
-  router: AppRouterInstance,
-  setResData: Dispatch<SetStateAction<object>>
+  setResData: Dispatch<SetStateAction<object>>,
+  router: AppRouterInstance
 ) => {
   if (res.status >= 400) {
     console.log("Server Error (" + res.resCode + "): " + res.resErrMsg);

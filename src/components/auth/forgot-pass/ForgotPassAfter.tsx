@@ -23,6 +23,12 @@ const ForgotPassAfter = ({
     token: token,
     password: "",
   });
+
+  const [formData, setFormData] = useState({
+    newPass: "",
+    confirmPass: "",
+  });
+
   const newPwdRef = useRef<HTMLInputElement>(null);
   const confirmPwdRef = useRef<HTMLInputElement>(null);
   const [resData, setResData] = useState<resDataObject>({
@@ -35,12 +41,17 @@ const ForgotPassAfter = ({
   const router = useRouter();
 
   const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    if (newPwdRef.current?.value !== confirmPwdRef.current?.value) {
-      setResData({
-        ...resData,
-        error: {
-          password: "Passwords do not match",
-        },
+    e.preventDefault();
+
+    if (formData.newPass !== formData.confirmPass) {
+      setResData((prev) => {
+        return {
+          ...prev,
+          error: {
+            ...prev.error,
+            password: "Password does not match",
+          },
+        };
       });
       return;
     }
@@ -48,10 +59,12 @@ const ForgotPassAfter = ({
     setCredentials((prev) => {
       return {
         ...prev,
-        password: newPwdRef.current?.value,
-      } as typeof prev;
+        password: formData.newPass,
+      };
     });
+    console.log(formData);
     console.log(credentials);
+
     const res = await fetchAuth("/auth/forgot-pass/change-pass", credentials);
     console.log(res);
 
@@ -61,13 +74,42 @@ const ForgotPassAfter = ({
       setResData as Dispatch<SetStateAction<object>>
     );
   };
+
+  const finalizePass = () => {};
+
   return (
     <>
       <h1>Your new Password</h1>
       <input type="text" value={email} disabled />
       <p>{resData.error?.email as string}</p>
-      <input type="text" placeholder="New Password" ref={newPwdRef} />
-      <input type="text" placeholder="Confirm Password" ref={confirmPwdRef} />
+      <input
+        type="text"
+        placeholder="New Password"
+        onInput={(e) => {
+          const target = e.target as HTMLInputElement;
+          setFormData((prev) => {
+            return {
+              ...prev,
+              newPass: target.value,
+            };
+          });
+          finalizePass();
+        }}
+      />
+      <input
+        type="text"
+        placeholder="Confirm Password"
+        onInput={(e) => {
+          const target = e.target as HTMLInputElement;
+          setFormData((prev) => {
+            return {
+              ...prev,
+              confirmPass: target.value,
+            };
+          });
+          finalizePass();
+        }}
+      />
       <p>{resData.error?.password as string}</p>
       <button onClick={handleSubmit}>Change</button>
       <p>{resData.pwdChanged ? "true" : "false"}</p>

@@ -1,0 +1,6 @@
+main>footer {
+    background-color: #212121;
+    min-height: 192px;
+    display: grid;
+    place-items: center;
+}
