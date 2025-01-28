@@ -6,13 +6,13 @@ const Page = async () => {
   const cook = await cookies();
   if (cook.has("refreshToken")) {
     redirect("/dashboard");
+  } else {
+    return (
+      <>
+        <AuthRegister />
+      </>
+    );
   }
-
-  return (
-    <>
-      <AuthRegister />
-    </>
-  );
 };
 
 export default Page;

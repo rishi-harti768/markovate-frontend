@@ -12,13 +12,13 @@ const Page = async ({
   const cook = await cookies();
   if (cook.has("refreshToken")) {
     redirect("/dashboard");
+  } else {
+    return (
+      <>
+        <ForgotPassAfter email={email} token={token} />
+      </>
+    );
   }
-
-  return (
-    <>
-      <ForgotPassAfter email={email} token={token} />
-    </>
-  );
 };
 
 export default Page;
